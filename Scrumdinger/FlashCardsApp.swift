@@ -88,12 +88,14 @@ struct FlashCardsApp: App {
 }
 
 struct HomeView: View {
-    @State var cards: [(question: String, answer: String, familiarity: Int)] = [
-        ("What is the capital of France?", "Paris", 1),
-        ("What is the largest planet in our solar system?", "Jupiter", 2),
-        ("What is the smallest country in the world?", "Vatican City", 0),
+    @State var cards: [FlashCard] =
+    [
+        FlashCard(question: "What is the capital of France?", answer: "Paris", familiarity: 1),
+        FlashCard(question: "What is the largest planet in our solar system?", answer: "Jupyter", familiarity: 2),
+        FlashCard(question: "What is the smallest country in the world?", answer: "Vatican City", familiarity: 0)
     ]
 
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -127,7 +129,7 @@ struct HomeView: View {
 struct FlashCardPresentation: View {
     @State private var showAnswer = false
     @State private var isEditing = false
-    @Binding var card: (question: String, answer: String, familiarity: Int)
+    @Binding var card: FlashCard
     let onSwipeRight: () -> Void
     let onSwipeLeft: () -> Void
 
@@ -177,7 +179,7 @@ struct FlashCardPresentation: View {
 }
 
 struct CreateFlashCardView: View {
-    @Binding var cards: [(question: String, answer: String, familiarity: Int)]
+    @Binding var cards: [FlashCard]
     @State private var question = ""
     @State private var answer = ""
 
@@ -186,7 +188,7 @@ struct CreateFlashCardView: View {
             TextField("Question", text: $question)
             TextField("Answer", text: $answer)
             Button(action: {
-                self.cards.append((question: self.question, answer: self.answer, familiarity: 0))
+                self.cards.append(FlashCard(question: self.question, answer: self.answer, familiarity: 0))
                 self.question = ""
                 self.answer = ""
             }) {
@@ -197,7 +199,7 @@ struct CreateFlashCardView: View {
 }
 
 struct RunFlashCardsView: View {
-    @Binding var cards: [(question: String, answer: String, familiarity: Int)]
+    @Binding var cards: [FlashCard]
 
     @State private var currentCardIndex = 0
 
